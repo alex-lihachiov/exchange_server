@@ -15,9 +15,17 @@ const redisClient = Redis.createClient({ url: process.env.REDIS_URL });
 // получаем список криптовалют
 export const getRedisCurrencies = () => redisClient.get('currencies');
 // устанавливаем список криптовалют из API
-export const setRedisCurrencyList = async (ticker) => {
-  const currencyList = JSON.stringify(await getCurrencyValue(ticker));
-  await redisClient.set('currencies', currencyList, { EX: 3 });
+export const setRedisCurrencyList = async () => {
+  let currencyList = [];
+  const btc = await getCurrencyValue('btc');
+  const ltc = await getCurrencyValue('ltc');
+  currencyList.push(btc);
+  currencyList.push(ltc);
+  currencyList = JSON.stringify(currencyList);
+  console.log(currencyList);
+  await redisClient
+    .set('currencies', currencyList, { EX: 10 })
+    .catch((er) => console.log('ошибка записи в редис', er));
 };
 
 redisClient.on('connect', () => console.log('::> Redis Client Connected'));

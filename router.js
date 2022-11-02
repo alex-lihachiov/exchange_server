@@ -5,7 +5,7 @@ const router = new Router();
 
 router.get('/cryptocurrencies', OfferController.getCurrencies);
 // отправка первоначальной заявки
-router.post('/offer', OfferController.getCurrencies);
+router.post('/offer', OfferController.createOffer);
 // TODO получение заявки
 router.get('/offer/:id', OfferController.getCurrencies);
 // TODO получение карты оплаты

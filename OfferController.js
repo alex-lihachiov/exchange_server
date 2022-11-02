@@ -1,12 +1,12 @@
+import { response } from 'express';
 import { getRedisCurrencies, setRedisCurrencyList } from './redis.js';
 
 class OfferController {
   async getCurrencies(req, res) {
-    const { ticker } = req.headers;
     const currenciesRedis = await getRedisCurrencies();
     console.log(req.headers.ticker);
     if (!currenciesRedis) {
-      await setRedisCurrencyList(ticker);
+      await setRedisCurrencyList();
       const data = JSON.parse(await getRedisCurrencies());
       res.json(data);
     } else {
@@ -14,11 +14,10 @@ class OfferController {
     }
   }
 
-  /*  async getOne(req, res) {
-    try {
-    } catch (err) {
-      res.status(500).json(err);
-    }
-  } */
+  async createOffer(req, res) {
+    console.log(req.body);
+    const offer = req.body;
+    res.json(offer);
+  }
 }
 export default new OfferController();
